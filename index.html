@@ -19,6 +19,9 @@
         <button type="button" onclick="setStatus('Ausente')">NÃO VOU</button>
     </form>
 
+    <br>
+    <button type="button" onclick="acessarRelatorio()">Ir para Relatório</button>
+
     <script>
         // Variável para armazenar o status
         let status = "Confirmado";
@@ -43,6 +46,16 @@
             let registros = JSON.parse(localStorage.getItem("registros")) || [];
             registros.push({ nome: nome, telefone: telefone, status: status });
             localStorage.setItem("registros", JSON.stringify(registros));
+        }
+
+        // Função para acessar o relatório com senha
+        function acessarRelatorio() {
+            let senha = prompt("Por favor, insira a senha para acessar o relatório:");
+            if (senha === "852456") {
+                window.location.href = 'relatorio.html';
+            } else {
+                alert("Senha incorreta!");
+            }
         }
     </script>
 </body>
