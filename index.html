@@ -16,24 +16,38 @@
         <input type="text" id="telefone" name="telefone" required><br><br>
 
         <button type="submit">Confirmado</button>
-        <button type="button" onclick="cancelar()">NÃO VOU</button>
+        <button type="button" onclick="naoVou()">NÃO VOU</button>
     </form>
 
-    <br>
-    <button onclick="acessarRelatorio()">Ir para Relatório</button>
-
     <script>
-        function acessarRelatorio() {
-            const senha = prompt("Digite a senha para acessar o relatório:");
-            if (senha === '852456') {
-                window.location.href = 'relatorio.html';
-            } else {
-                alert("Senha incorreta. Acesso negado.");
-            }
+        // Função para armazenar o status "Confirmado"
+        document.getElementById("formulario").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let nome = document.getElementById("nome").value;
+            let telefone = document.getElementById("telefone").value;
+            let status = "Confirmado";
+            salvarDados(nome, telefone, status);
+        });
+
+        // Função para armazenar o status "Ausente" (NÃO VOU)
+        function naoVou() {
+            let nome = document.getElementById("nome").value;
+            let telefone = document.getElementById("telefone").value;
+            let status = "Ausente";
+            salvarDados(nome, telefone, status);
+            alert("Você selecionou 'NÃO VOU'. Informação armazenada.");
         }
 
-        function cancelar() {
-            alert("Você selecionou 'NÃO VOU'.");
+        // Função para salvar os dados no localStorage
+        function salvarDados(nome, telefone, status) {
+            let registros = JSON.parse(localStorage.getItem("registros")) || [];
+            registros.push({ nome: nome, telefone: telefone, status: status });
+            localStorage.setItem("registros", JSON.stringify(registros));
+        }
+    </script>
+</body>
+</html>
+
         }
     </script>
 
