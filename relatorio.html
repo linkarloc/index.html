@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Informações</title>
+</head>
+<body>
+    <h1>Relatório de Informações</h1>
+    
+    <table border="1" id="relatorio">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados do relatório aparecerão aqui -->
+        </tbody>
+    </table>
+
+    <br>
+    <button onclick="window.location.href='index.html'">Voltar para Cadastro</button>
+    <button onclick="limparRelatorio()">Limpar Informações</button>
+
+    <script src="relatorio.js"></script>
+    <script>
+        function limparRelatorio() {
+            localStorage.removeItem('cadastros'); // Limpa os dados do localStorage
+            document.querySelector('#relatorio tbody').innerHTML = ''; // Limpa a tabela
+            alert('Informações limpas com sucesso!');
+        }
+    </script>
+</body>
+</html>
