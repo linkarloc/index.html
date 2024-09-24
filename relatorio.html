@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<relatorio html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -16,22 +16,48 @@
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="corpo-relatorio">
             <!-- Dados do relatório aparecerão aqui -->
         </tbody>
     </table>
 
     <br>
+    <button onclick="limparDados()">Limpar Informações</button>
     <button onclick="window.location.href='index.html'">Voltar para Cadastro</button>
-    <button onclick="limparRelatorio()">Limpar Informações</button>
 
-    <script src="relatorio.js"></script>
     <script>
-        function limparRelatorio() {
-            localStorage.removeItem('cadastros'); // Limpa os dados do localStorage
-            document.querySelector('#relatorio tbody').innerHTML = ''; // Limpa a tabela
-            alert('Informações limpas com sucesso!');
+        // Função para carregar as informações do localStorage no relatório
+        function carregarRelatorio() {
+            let registros = JSON.parse(localStorage.getItem("registros")) || [];
+
+            // Referência ao corpo da tabela
+            let corpoRelatorio = document.getElementById("corpo-relatorio");
+
+            // Limpa o conteúdo atual da tabela
+            corpoRelatorio.innerHTML = "";
+
+            // Adiciona cada registro na tabela
+            registros.forEach(function(registro) {
+                let linha = document.createElement("tr");
+                linha.innerHTML = `
+                    <td>${registro.nome}</td>
+                    <td>${registro.telefone}</td>
+                    <td>${registro.status}</td>
+                `;
+                corpoRelatorio.appendChild(linha);
+            });
         }
+
+        // Função para limpar os dados do localStorage
+        function limparDados() {
+            if (confirm("Tem certeza que deseja limpar todas as informações?")) {
+                localStorage.removeItem("registros");
+                carregarRelatorio(); // Atualiza o relatório para remover os dados exibidos
+            }
+        }
+
+        // Carrega o relatório ao abrir a página
+        carregarRelatorio();
     </script>
 </body>
 </html>
