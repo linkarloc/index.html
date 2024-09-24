@@ -15,37 +15,40 @@
         <label for="telefone">Telefone:</label>
         <input type="text" id="telefone" name="telefone" required><br><br>
 
-        <button type="submit" onclick="setStatus('Confirmado')">Confirmado</button>
-        <button type="button" onclick="setStatus('Ausente')">NÃO VOU</button>
+        <button type="button" onclick="salvarInformacao('Confirmado')">Confirmado</button>
+        <button type="button" onclick="salvarInformacao('Ausente')">NÃO VOU</button>
     </form>
 
     <br>
     <button type="button" onclick="acessarRelatorio()">Ir para Relatório</button>
 
     <script>
-        // Variável para armazenar o status
-        let status = "Confirmado";
-
-        // Função para definir o status
-        function setStatus(novoStatus) {
-            status = novoStatus;
-            document.getElementById("formulario").submit(); // Submete o formulário
-        }
-
-        // Função para salvar os dados no localStorage ao submeter o formulário
-        document.getElementById("formulario").addEventListener("submit", function(event) {
-            event.preventDefault(); // Impede o comportamento padrão de recarregar a página
+        // Função para salvar os dados no localStorage
+        function salvarInformacao(status) {
+            // Obtém os valores do nome e telefone
             let nome = document.getElementById("nome").value;
             let telefone = document.getElementById("telefone").value;
-            salvarDados(nome, telefone, status);
-            alert("Informações armazenadas com status: " + status);
-        });
 
-        // Função para salvar os dados no localStorage
-        function salvarDados(nome, telefone, status) {
+            // Verifica se os campos estão preenchidos
+            if (nome === "" || telefone === "") {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            // Obtém os registros atuais do localStorage ou cria um array vazio se não houver nenhum
             let registros = JSON.parse(localStorage.getItem("registros")) || [];
+
+            // Adiciona o novo registro
             registros.push({ nome: nome, telefone: telefone, status: status });
+
+            // Salva os registros atualizados no localStorage
             localStorage.setItem("registros", JSON.stringify(registros));
+
+            // Mostra uma mensagem de confirmação
+            alert("Informações armazenadas com status: " + status);
+
+            // Limpa os campos do formulário após salvar
+            document.getElementById("formulario").reset();
         }
 
         // Função para acessar o relatório com senha
@@ -60,4 +63,5 @@
     </script>
 </body>
 </html>
+
 
