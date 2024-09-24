@@ -1,35 +1,47 @@
-let statusCadastro = '';  // Variável para armazenar o status do cadastro
+// Importar e inicializar o Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
 
-// Função chamada quando o usuário clicar em "NÃO VOU"
-function cancelar() {
-    statusCadastro = 'Ausente';  // Marca como Ausente
-    salvarDados();  // Salva os dados como Ausente
-    document.getElementById('formulario').reset();
-}
-
-// Função chamada quando o formulário for enviado
-document.getElementById('formulario').onsubmit = function(event) {
-    event.preventDefault();
-    
-    statusCadastro = 'Confirmado';  // Define o status como Confirmado
-    salvarDados();  // Salva os dados como Confirmado
-    document.getElementById('formulario').reset();
+// Configuração do Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBnzbjcW_HSRtS01r33fjuLLppux23vRYA",
+  authDomain: "meusite-d0996.firebaseapp.com",
+  projectId: "meusite-d0996",
+  storageBucket: "meusite-d0996.appspot.com",
+  messagingSenderId: "276591811559",
+  appId: "1:276591811559:web:5ea0b5de3cc2137315fb42",
+  measurementId: "G-6Q1B9QGZ9Z"
 };
 
-// Função para salvar os dados no localStorage
-function salvarDados() {
-    const nome = document.getElementById('nome').value || 'N/A';
-    const telefone = document.getElementById('telefone').value || 'N/A';
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const database = getDatabase(app);
 
-    let dados = JSON.parse(localStorage.getItem('cadastros')) || [];
-
-    // Adiciona o novo cadastro à lista de dados
-    dados.push({
-        nome: nome,
+// Função para salvar os dados no Firebase
+function salvarDados(nome, telefone, status) {
+    set(ref(database, 'usuarios/' + nome), {
         telefone: telefone,
-        status: statusCadastro
+        status: status
+    }).then(() => {
+        alert('Dados salvos com sucesso!');
+    }).catch((error) => {
+        alert('Falha ao salvar dados: ' + error);
     });
+}
 
-    // Salva a lista atualizada no localStorage
-    localStorage.setItem('cadastros', JSON.stringify(dados));
+// Lidar com o formulário de confirmação
+document.getElementById('formulario').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nome = document.getElementById('nome').value;
+    const telefone = document.getElementById('telefone').value;
+    salvarDados(nome, telefone, 'Confirmado');
+});
+
+// Função para lidar com o botão "NÃO VOU"
+function cancelar() {
+    const nome = document.getElementById('nome').value;
+    const telefone = document.getElementById('telefone').value;
+    salvarDados(nome, telefone, 'NÃO VOU');
 }
