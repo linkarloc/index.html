@@ -19,6 +19,23 @@
         <button type="button" onclick="cancelar()">NÃO VOU</button>
     </form>
 
-    <script src="script.js"></script>
+    <br>
+    <button onclick="acessarRelatorio()">Ir para Relatório</button>
+
+    <script>
+        function acessarRelatorio() {
+            const senha = prompt("Digite a senha para acessar o relatório:");
+            if (senha === '852456') {
+                window.location.href = 'relatorio.html';
+            } else {
+                alert("Senha incorreta. Acesso negado.");
+            }
+        }
+
+        function cancelar() {
+            alert("Você selecionou 'NÃO VOU'.");
+        }
+    </script>
+
 </body>
 </html>
